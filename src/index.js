@@ -122,7 +122,8 @@ export default class extends Component {
     dotStyle: PropTypes.object,
     activeDotStyle: PropTypes.object,
     dotColor: PropTypes.string,
-    activeDotColor: PropTypes.string
+    activeDotColor: PropTypes.string,
+    onIndexChanged: PropTypes.func
   }
 
   /**
@@ -147,8 +148,9 @@ export default class extends Component {
     autoplay: false,
     autoplayTimeout: 2.5,
     autoplayDirection: true,
-    index: 0
-  }
+    index: 0,
+    onIndexChanged: () => null
+}
 
   /**
    * Init states
@@ -178,7 +180,9 @@ export default class extends Component {
     this.autoplayTimer && clearTimeout(this.autoplayTimer)
     this.loopJumpTimer && clearTimeout(this.loopJumpTimer)
   }
-
+  componentWillUpdate (nextProps, nextState) {
+    if (this.state.index !== nextState.index) this.props.onIndexChanged(nextState.index)
+  }
   initState (props, setOffsetInState) {
     // set the current state
     const state = this.state || {}
